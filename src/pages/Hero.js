@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useContext, useState } from 'react';
+import {GlobalContext} from '../context/GlobalContext';
 import { useParams } from 'react-router-dom';
 import { FaStar, FaRegStar } from 'react-icons/fa';
 
@@ -12,6 +13,7 @@ const powers = [
 
 const HeroPage = () => {
   let { heroId } = useParams();
+  const {heroes, updateFeatured} = useContext(GlobalContext);
   const [hero, setHero] = useState({
     superhero: '',
     publisher: '',
@@ -22,12 +24,10 @@ const HeroPage = () => {
     image_url: '',
   });
 
-  /* TODO: Uncomment useEffect after heroes data set is hooked in */
-  // useEffect(() => {
-  //   let foundHero = heroes.find(h => h.id === +heroId);
-  //   // console.log(foundHero);
-  //   setHero(foundHero);
-  // }, [hero, heroId, heroes]);
+  useEffect(() => {
+    let foundHero = heroes.find(h => h.id === +heroId);
+      setHero(foundHero);
+  }, [hero, heroId, heroes]);
 
   if (!hero.id) {
     return (
@@ -58,7 +58,7 @@ const HeroPage = () => {
                   <div className='th-card-header d-flex justify-content-between'>
                     <span>
                       <a
-                        // onClick={() => updateFeatured(hero.id)}
+                        onClick={() => updateFeatured(hero.id)}
                         href='javascript:void(0)'>
                         {hero.featured ? (
                           <FaStar style={{ color: 'gold' }} />
